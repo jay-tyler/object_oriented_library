@@ -5,12 +5,7 @@ An object oriented libary model, done in response to a CodeFellows
     2. shelves - a containing class for books
     3. libraries - a containing class for shelves
 '''
-'''
-if __name__ == "__main__":
-    # this is to import and execute doctest on output at bottom
-    import doctest
-    doctest.testmod()
-'''
+
 class ShelfContainingMethod(object):
     '''
     This is being defined for extensibility and code-DRY-ness.
@@ -36,7 +31,7 @@ class ShelfContainingMethod(object):
         new_shelf_container.shelves.append(shelf_name)      
 
     def __str__(self):
-        message = "\nShelf-container named '%s' containing the following shelves: \
+        message = "Shelf-container named '%s' containing the following shelves: \
                   \n-----\n" % self.name
         books = "\n".join([str(shelf) for shelf in self.shelves])
         return message + books
@@ -84,7 +79,7 @@ class BookContainingMethod(object):
         new_book_container.books.append(book_name)      
 
     def __str__(self):
-        message = "\nBook-container named '%s' containing the following books:\
+        message = "Book-container named '%s' containing the following books:\
                   \n-----\n" % self.name
         books = "\n".join([str(book) for book in self.books])
         return message + books
@@ -119,3 +114,101 @@ class Book(object):
 
     def __repr__(self):
         return "Book({})".format(self.name)
+
+
+"""
+#Example output
+#==============
+
+# Let's instantiate some books
+book1 = Book("The tides of darkness")
+book2 = Book("The near side of the moon")
+book3 = Book("The last book you'd ever read")
+
+# Checking the representation of one of these books
+print book1
+# prints: Book(The tides of darkness)
+
+# Bundle our books together
+books = [book1, book2, book3]
+
+# And shove our bundled books into a new shelf instance
+my_shelf = Shelf(books, "My first shelf")
+
+# Check the representation of the shelf
+print my_shelf
+''' prints:
+Book-container named 'My first shelf' containing the following books:                  
+-----
+Book(The tides of darkness)
+Book(The near side of the moon)
+Book(The last book you'd ever read)
+
+# And shove my_shelf into a new library instance
+my_library = Library([my_shelf], "T-town Library", "1234 E. Miles St.")
+
+# Check the representation of my_library
+print my_library
+prints '''
+Shelf-container named 'T-town Library' containing the following shelves:                   
+-----
+
+Book-container named 'My first shelf' containing the following books:                  
+-----
+Book(The tides of darkness)
+Book(The near side of the moon)
+Book(The last book you'd ever read)
+'''
+
+# expanding the library by calling its create_shelf method
+another_shelf = my_library.create_shelf([Book("A book for a new shelf")], "brand new expansion shelf")
+
+# printing the library again
+print my_library
+''' prints:
+Shelf-container named 'T-town Library' containing the following shelves:                   
+-----
+
+Book-container named 'My first shelf' containing the following books:                  
+-----
+Book(The tides of darkness)
+Book(The near side of the moon)
+Book(The last book you'd ever read)
+
+Book-container named 'Expansion shelf' containing the following books:                  
+-----
+Book(A book for a new shelf)
+'''
+
+# using counting methods for library, shelf
+my_library.get_number_books()
+4
+my_library.get_number_shelves()
+2
+my_shelf.get_number_books()
+3
+another_shelf.get_number_books()
+1
+
+# pass a book from my_shelf to another_shelf
+my_shelf.move_book(book3, another_shelf)
+
+# check books list for both my_shelf and another_shelf
+my_shelf.books
+# prints: [Book(The tides of darkness), Book(The near side of the moon)]
+another_shelf.books
+# prints: [Book(A book for a new shelf), Book(The last book you'd ever read)]
+
+# instantiate a new library
+another_library = Library(name="L-town Library", address="9876 W. Highland Blvd.")
+
+# pass another_library another_shelf
+my_library.move_shelf(another_shelf, another_library)
+
+# check number of books in each library
+my_library.get_number_books()
+# prints: 2
+another_library.get_number_books()
+# prints: 2
+"""
+
